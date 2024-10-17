@@ -1,0 +1,31 @@
+#prac8 knn
+#knn
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+
+dataset = pd.read_csv("C:/Users/Pawar/Downloads/iris.csv")
+x = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, -1].values
+
+LabelEncoder_Y = LabelEncoder()
+y = LabelEncoder_Y.fit_transform(y)
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=0)
+sc = StandardScaler()
+x_train = sc.fit_transform(x_train)
+x_test = sc.transform(x_test)
+
+knn = KNeighborsClassifier(n_neighbors=5, metric="minkowski", p=2)
+knn.fit(x_train, y_train)
+y_pred = knn.predict(x_test)
+print(y_pred)
+
+confusion_matrix = confusion_matrix(y_test, y_pred)
+print(confusion_matrix)
+
+accuracy_score = accuracy_score(y_test, y_pred)
+print(accuracy_score * 100)
